@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<style type="text/css">
+		.prop {
+			position: absolute;
+			height: 90px;
+			width: 200px;
+			background-size: 100% 100%;
+		}
+
+		.krot{
+			position: absolute;
+			width: 50px;
+			height: 50px;
+			background-size: 100% 100%;
+		}
+		.Button{
+			position: absolute;
+			left: 625px;
+			top: 225px;
+			width: 250px;
+			height: 250px;
+			background: mediumpurple;
+			text-align: center;
+			font-size: 25px;
+		}
+		.scoresCL{
+			position: absolute;
+			left: 745px;
+			font-size: 25px;
+		}
+		.good{
+			height: 55px;
+		}
+	</style>
+</head>
+<body style="background-image: url(фон.avif); background-size: 100%">
+
+<!-- дивы норы чтобы появится -->
+<div class="scoresCL">0</div>
+	<div class="first prop" style="top: 70px; left: 450px"></div>
+	<div class="prop" style="top: 70px; left: 650px"></div>
+	<div class="prop" style="top: 70px; left: 850px"></div>
+
+	<div class="prop" style="top: 270px; left: 450px"></div>
+	<div class="prop" style="top: 270px; left: 650px"></div>
+	<div class="prop" style="top: 270px; left: 850px"></div>
+
+	<div class="prop" style="top: 470px; left: 450px"></div>
+	<div class="prop" style="top: 470px; left: 650px"></div>
+	<div class="prop" style="top: 470px; left: 850px"></div>
+<div class="Button">Start Game</div>
+
+
+
+
+<script type="text/javascript">
+	let scores = 0
+	let scrsl = document.querySelector(".scoresCL")
+	let firstHole = document.querySelector(".first")
+
+	let button = document.querySelector(".Button")
+
+	let props = document.querySelectorAll(".prop")
+
+
+    for(let i = 0; i < 9; i++){
+    	props[i].style.backgroundImage = "url(nora.avif)"
+    }
+
+    let random = function(num){
+        let rand = Math.random() * num 
+        let round = Math.round(rand) 
+
+        return round
+    }
+    let TimerRandom1 = function(num){
+        let rand = Math.random() * num 
+        let round = rand + 1
+        return round
+    }
+    let TimerRandom2 = function(num){
+        let rand = Math.random() * num 
+        let round = rand + 2
+        return round
+    }
+    let DisplayNone = function(num){
+        num.style.display = "none"
+    }
+
+	let massiveLeft = [525, 725, 925]
+	let massiveTop = [100, 300, 500]
+	let Namess = ["good","good","good", "bad", "bad"]
+
+	let timer = function(){
+		if(scores>=10){
+			alert("you win")
+		}else if (scores < 10){
+			alert("you loose")
+		}
+	}
+	
+	let CreateKrot = function(){
+		let krot = document.createElement("div")
+		document.body.appendChild(krot)
+		krot.classList.add("krot")
+		let a = massiveTop[random(2)]
+
+		firstHole.before(krot)
+
+		krot.style.top = a + "px"
+		krot.style.transition = "0.5s"
+		krot.style.left = massiveLeft[random(2)] + "px"
+		krot.name = Namess[random(Namess.length)]
+
+		if(krot.name=="good"){
+			krot.classList.add("good")
+			krot.style.backgroundImage = "url(krot.png)"
+		} else{
+			krot.style.backgroundImage = "url(bomb.png)"
+		}
+
+
+		let show = function(){
+			let onehund = a - 75
+			krot.style.top = onehund + "px"
+		}
+
+	    setTimeout(show, 1000);;
+		let Unshow = function(){
+			let onehund = a
+			krot.style.top = onehund + "px"
+		}
+	    setTimeout(Unshow, 2000);
+		console.log(krot.name)
+	    krot.onclick = function(){
+	    	if(krot.name=="good"){
+	    		scores += 1 
+	    		Unshow()
+				scrsl.innerHTML = scores
+	    	}
+	    	else if(krot.name=="bad"){
+	    		scores -= 1
+	    		Unshow()
+				scrsl.innerHTML = scores
+	    	}
+	    }
+
+	}
+	button.onclick = function(){
+		setInterval(CreateKrot, 500)
+		button.style.display = "none"
+
+		setTimeout(timer, 15000)
+
+	}
+
+</script>
+</body>
+</html>
